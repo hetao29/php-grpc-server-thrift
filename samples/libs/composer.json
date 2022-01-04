@@ -1,0 +1,12 @@
+{
+	"require": {
+		"apache/thrift": "~v0.15.0",
+		"hetao29/php-grpc-server-thrift": "dev-main"
+	},
+	"repositories": {
+		"packagist": {
+			"type": "composer",
+			"url": "https://mirrors.aliyun.com/composer/"
+		}
+	}
+}

@@ -19,24 +19,14 @@ composer require "hetao29/php-grpc-server-thrift:1.0.0"
 <?php
 define("ROOT",						dirname(__FILE__)."/../");
 define("ROOT_LIBS",					ROOT."/libs");
-define("ROOT_APP",					ROOT."/app");
-define("ROOT_PROTO_GENERATED",		ROOT."/proto_generated");
-require_once(ROOT_LIBS."/vendor/autoload.php");
-spl_autoload_register(function($class){
-	$root = ROOT_PROTO_GENERATED."/".str_replace("\\","/",$class).".php";
-	if(is_file($root)){
-		require_once($root);
-	}
-});
-spl_autoload_register(function($class){
-	$root = ROOT_APP."/".str_replace("\\","/",$class).".php";
-	if(is_file($root)){
-		require_once($root);
-	}
-});
+define("ROOT_SERVICE",				ROOT."/service");
+define("ROOT_PROTO_GENERATED",		ROOT."/thrift_out/");
 
+require_once(ROOT_LIBS."/vendor/autoload.php");
+
+GRpcServer::$serviceDir=ROOT_SERVICE;
+GRpcServer::$defDir=ROOT_PROTO_GENERATED;
 if(($r=GRpcServer::run())!==false){
-	echo($r);
 }
 ```
 
@@ -52,42 +42,21 @@ cd proto && make
 
 ```php
 <?php
-namespace Test\Helloworld;
-class Greeter{
-	/**
-	 * @return HelloReply
-	 */
-	public function SayHello(HelloRequest $request) : HelloReply{
-		$reply = new HelloReply();
-		$reply->setMessage("Hello, ".$request->getName()."!");
-		return $reply;
-	}
+namespace Test\HelloThrift;
+
+class HelloServiceHandler implements HelloServiceIf {
+
+    public function sayHello($username)
+    {
+        return "Hello ".$username.", how are u?";
+    }
 }
+
 
 ```
 
-3. config nginx && php-fpm
-
-```conf
-server {
-	listen 50000 http2;
-	root /data/server/;
-	location / {
-		if (!-e $request_filename){
-			rewrite ^/(.+?)$ /index.php last;
-		}
-	}
-	location ~ \.php$ {
-		fastcgi_param REMOTE_ADDR $http_x_real_ip;
-		fastcgi_pass   127.0.0.1:9000;
-		fastcgi_index  index.php;
-		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-		include        fastcgi_params;
-	}
-}
-```
-4. test
+3. test
 
 ```bash
-php client/hello.php
+php www/client.php
 ```

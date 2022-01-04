@@ -1,0 +1,131 @@
+{
+    "packages": [
+        {
+            "name": "apache/thrift",
+            "version": "v0.15.0",
+            "version_normalized": "0.15.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/apache/thrift.git",
+                "reference": "8317ec43ea2425b6f8e24e4dc4f5b2360f717eb4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/apache/thrift/zipball/8317ec43ea2425b6f8e24e4dc4f5b2360f717eb4",
+                "reference": "8317ec43ea2425b6f8e24e4dc4f5b2360f717eb4",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.5 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.36",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "time": "2021-09-04T18:45:55+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Thrift\\": "lib/php/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Apache Thrift Developers",
+                    "email": "dev@thrift.apache.org",
+                    "homepage": "http://thrift.apache.org"
+                }
+            ],
+            "description": "Apache Thrift RPC system",
+            "homepage": "http://thrift.apache.org",
+            "keywords": [
+                "rpc"
+            ],
+            "support": {
+                "email": "dev@thrift.apache.org",
+                "issues": "https://issues.apache.org/jira/browse/THRIFT",
+                "source": "https://github.com/apache/thrift/tree/v0.15.0"
+            },
+            "install-path": "../apache/thrift"
+        },
+        {
+            "name": "hetao29/php-grpc-server-thrift",
+            "version": "dev-main",
+            "version_normalized": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hetao29/php-grpc-server-thrift.git",
+                "reference": "dba818e5a487d1db6d0386024fe21ab340ac47aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hetao29/php-grpc-server-thrift/zipball/dba818e5a487d1db6d0386024fe21ab340ac47aa",
+                "reference": "dba818e5a487d1db6d0386024fe21ab340ac47aa",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "apache/thrift": "~v0.15.0"
+            },
+            "time": "2022-01-04T10:16:14+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "GRpcServer.php",
+                    "GRpcClient.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "hetao",
+                    "email": "hetao@hetao.name",
+                    "homepage": "https://github.com/hetao29"
+                }
+            ],
+            "description": "The php grpc server framework with thrift and DO NOT use any 3rd libraries.",
+            "homepage": "https://github.com/hetao29/php-grpc-server-thrift",
+            "keywords": [
+                "gRPC",
+                "nginx",
+                "php",
+                "php-fpm",
+                "server",
+                "thrift"
+            ],
+            "support": {
+                "issues": "https://github.com/hetao29/php-grpc-server-thrift/issues",
+                "source": "https://github.com/hetao29/php-grpc-server-thrift/tree/main"
+            },
+            "install-path": "../hetao29/php-grpc-server-thrift"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
