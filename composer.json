@@ -16,6 +16,6 @@
 		"apache/thrift": "~v0.15.0"
 	},
 	"autoload":{
-		"files":["GRpcServer.php"]
+		"files":["GRpcServer.php","GRpcClient.php"]
 	}
 }
