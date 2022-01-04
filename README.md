@@ -17,10 +17,10 @@ composer require "hetao29/php-grpc-server-thrift:1.0.0"
 
 ```php
 <?php
-define("ROOT",						dirname(__FILE__)."/../");
-define("ROOT_LIBS",					ROOT."/libs");
-define("ROOT_SERVICE",				ROOT."/service");
-define("ROOT_PROTO_GENERATED",		ROOT."/thrift_out/");
+define("ROOT", dirname(__FILE__)."/../");
+define("ROOT_LIBS", ROOT."/libs");
+define("ROOT_SERVICE", ROOT."/service");
+define("ROOT_PROTO_GENERATED", ROOT."/thrift_out/");
 
 require_once(ROOT_LIBS."/vendor/autoload.php");
 
@@ -32,10 +32,10 @@ if(($r=GRpcServer::run())!==false){
 
 # Write App Services 
 
-1. proto and genproto to php files
+1. gen thrift to php files
 
 ```bash
-cd proto && make
+make gen
 ```
 
 2. write gRPC Server in services dir like helloworld
