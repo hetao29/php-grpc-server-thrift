@@ -1,0 +1,21 @@
+{
+	"name": "hetao29/php-grpc-server-thrift",
+	"description": "The php grpc server framework with thrift and DO NOT use any 3rd libraries.",
+	"keywords": ["php", "grpc", "server", "thrift", "php-fpm", "nginx"],
+	"homepage": "https://github.com/hetao29/php-grpc-server-thrift",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "hetao",
+			"email": "hetao@hetao.name",
+			"homepage": "https://github.com/hetao29"
+		}
+	],
+	"require": {
+		"apache/thrift": "~v0.15.0"
+	},
+	"autoload":{
+		"files":["GRpcServer.php"]
+	}
+}
