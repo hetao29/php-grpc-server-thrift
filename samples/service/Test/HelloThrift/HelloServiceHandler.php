@@ -7,5 +7,11 @@ class HelloServiceHandler implements HelloServiceIf {
     {
         return "Hello ".$username.", how are u?";
     }
+    public function sayHelloRequest(Request $req1,Request2 $req2):Response
+    {
+		$response = new Response();
+		$response->name="xxx";
+		return $response;
+    }
 }
 

@@ -18,6 +18,7 @@ use Thrift\Exception\TApplicationException;
 
 interface HelloServiceIf {
   public function sayHello($username);
+  public function sayHelloRequest(\Test\HelloThrift\Request $req, \Test\HelloThrift\Request2 $req1);
 }
 
 class HelloServiceClient implements \Test\HelloThrift\HelloServiceIf {
@@ -80,6 +81,58 @@ class HelloServiceClient implements \Test\HelloThrift\HelloServiceIf {
       return $result->success;
     }
     throw new \Exception("sayHello failed: unknown result");
+  }
+
+  public function sayHelloRequest(\Test\HelloThrift\Request $req, \Test\HelloThrift\Request2 $req1)
+  {
+    $this->send_sayHelloRequest($req, $req1);
+    return $this->recv_sayHelloRequest();
+  }
+
+  public function send_sayHelloRequest(\Test\HelloThrift\Request $req, \Test\HelloThrift\Request2 $req1)
+  {
+    $args = new \Test\HelloThrift\HelloService_sayHelloRequest_args();
+    $args->req = $req;
+    $args->req1 = $req1;
+    $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'sayHelloRequest', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('sayHelloRequest', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_sayHelloRequest()
+  {
+    $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\Test\HelloThrift\HelloService_sayHelloRequest_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \Test\HelloThrift\HelloService_sayHelloRequest_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("sayHelloRequest failed: unknown result");
   }
 
 }
@@ -230,6 +283,185 @@ class HelloService_sayHello_result {
 
 }
 
+class HelloService_sayHelloRequest_args {
+  static $_TSPEC;
+
+  public $req = null;
+  public $req1 = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'req',
+          'type' => TType::STRUCT,
+          'class' => '\Test\HelloThrift\Request',
+          ),
+        2 => array(
+          'var' => 'req1',
+          'type' => TType::STRUCT,
+          'class' => '\Test\HelloThrift\Request2',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['req'])) {
+        $this->req = $vals['req'];
+      }
+      if (isset($vals['req1'])) {
+        $this->req1 = $vals['req1'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'HelloService_sayHelloRequest_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->req = new \Test\HelloThrift\Request();
+            $xfer += $this->req->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRUCT) {
+            $this->req1 = new \Test\HelloThrift\Request2();
+            $xfer += $this->req1->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('HelloService_sayHelloRequest_args');
+    if ($this->req !== null) {
+      if (!is_object($this->req)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('req', TType::STRUCT, 1);
+      $xfer += $this->req->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->req1 !== null) {
+      if (!is_object($this->req1)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('req1', TType::STRUCT, 2);
+      $xfer += $this->req1->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class HelloService_sayHelloRequest_result {
+  static $_TSPEC;
+
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        0 => array(
+          'var' => 'success',
+          'type' => TType::STRUCT,
+          'class' => '\Test\HelloThrift\Response',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'HelloService_sayHelloRequest_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRUCT) {
+            $this->success = new \Test\HelloThrift\Response();
+            $xfer += $this->success->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('HelloService_sayHelloRequest_result');
+    if ($this->success !== null) {
+      if (!is_object($this->success)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);
+      $xfer += $this->success->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 class HelloServiceProcessor {
   protected $handler_ = null;
   public function __construct($handler) {
@@ -271,6 +503,25 @@ class HelloServiceProcessor {
     else
     {
       $output->writeMessageBegin('sayHello', TMessageType::REPLY, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+  }
+  protected function process_sayHelloRequest($seqid, $input, $output) {
+    $args = new \Test\HelloThrift\HelloService_sayHelloRequest_args();
+    $args->read($input);
+    $input->readMessageEnd();
+    $result = new \Test\HelloThrift\HelloService_sayHelloRequest_result();
+    $result->success = $this->handler_->sayHelloRequest($args->req, $args->req1);
+    $bin_accel = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($output, 'sayHelloRequest', TMessageType::REPLY, $result, $seqid, $output->isStrictWrite());
+    }
+    else
+    {
+      $output->writeMessageBegin('sayHelloRequest', TMessageType::REPLY, $seqid);
       $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
