@@ -23,7 +23,6 @@ spl_autoload_register(function($class){
 	}
 });
 spl_autoload_register(function($class){
-	$class=str_replace("Client","",$class);
 	$root = GRpcClient::$defDir."/".str_replace("\\","/",$class).".php";
 	if(is_file($root)){
 		require_once($root);
