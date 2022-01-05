@@ -44,6 +44,7 @@ final class GRpcServer{
 	public static function run(){
 		//URI formst : /$namespace/$service
 		$uri = $_SERVER['REQUEST_URI'] ?? "";
+		$protocol_name = $_SERVER['HTTP_THRIFT_PROTOCOL'] ?? "";
 		$part = preg_split('/[\/]/',$uri,-1,PREG_SPLIT_NO_EMPTY);
 		if(count($part)<2){
 			return false;
@@ -63,7 +64,13 @@ final class GRpcServer{
 			return false;
 		}
 		$transport = new Thrift\Transport\TBufferedTransport(new Thrift\Transport\TPhpStream(Thrift\Transport\TPhpStream::MODE_R | Thrift\Transport\TPhpStream::MODE_W));
-		$protocol = new Thrift\Protocol\TBinaryProtocol($transport,true,true);
+		if($protocol_name == "json"){
+			$protocol = new Thrift\Protocol\TJSONProtocol($transport);
+		}elseif($protocol_name =="compact"){
+			$protocol = new Thrift\Protocol\TCompactProtocol($transport);
+		}else{
+			$protocol = new Thrift\Protocol\TBinaryProtocol($transport,true,true);
+		}
 		$handler = new $handler_name();
 		$processor = new $processor_name($handler);
 		$transport->open();

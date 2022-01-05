@@ -40,7 +40,10 @@ final class GRpcClient{
 	public function __call($namespace, $service){
 	}
 
-	public static function getService($host, $port, $namespace, $service){
+	/**
+	 * protocol = binary [ json | compact ]
+	 */
+	public static function getService($host, $port, $namespace, $service, $protocol_name="", array $headers=array()){
 		if (isset(self::$_instance[$host][$port][$namespace][$service])) {
 			return self::$_instance[$host][$port][$namespace][$service];
 		}
@@ -48,8 +51,20 @@ final class GRpcClient{
 		$loader->registerDefinition($namespace,ROOT_PROTO_GENERATED);
 		$loader->register();
 		$socket = new Thrift\Transport\THttpClient($host,$port,"$namespace/$service");
+		if(!empty($headers)){
+			$socket->addHeaders($headers);
+		}
+		if(in_array($protocol_name,['binary','json','compact'])){
+			$socket->addHeaders(['thrift-protocol'=>$protocol_name]);
+		}
 		$transport = new Thrift\Transport\TBufferedTransport($socket,1024,1024);
-		$protocol = new Thrift\Protocol\TBinaryProtocol($transport,true,true);
+		if($protocol_name=="json"){
+			$protocol = new Thrift\Protocol\TJSONProtocol($transport);
+		}elseif($protocol_name=="compact"){
+			$protocol = new Thrift\Protocol\TCompactProtocol($transport);
+		}else{
+			$protocol = new Thrift\Protocol\TBinaryProtocol($transport,true,true);
+		}
 		$namespace_covert = str_replace(".","\\",$namespace);
 		$client_name = $namespace_covert."\\".$service."Client";
 		return self::$_instance[$host][$port][$namespace][$service] = new $client_name($protocol);
