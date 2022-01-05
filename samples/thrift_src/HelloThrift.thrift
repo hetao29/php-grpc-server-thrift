@@ -1,5 +1,6 @@
 namespace php Test.HelloThrift
 namespace go Test.HelloThrift
+namespace dart Test.HelloThrift
 
 struct Request{
 1:i32 number=10,
